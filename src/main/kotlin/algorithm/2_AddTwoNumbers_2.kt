@@ -14,7 +14,7 @@ package algorithm
 原因：342 + 465 = 807
 
  */
-fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
+fun addTwoNumbers2(l1: ListNode?, l2: ListNode?): ListNode? {
     if (l1 == null) {
         return l2
     }
@@ -23,45 +23,32 @@ fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
         return l1
     }
 
-    var carry: Int
-    var v = l1.value + l2.value
-    carry = v / 10
-    v %= 10
-    val result = ListNode(v)
 
-    var l1CurrentNode: ListNode? = l1.next
-    var l2CurrentNode: ListNode? = l2.next
+    val result = ListNode(0)
+
+    var carry = 0
     var currentResultNode: ListNode? = result
 
+    var l1CurrentNode: ListNode? = l1
+    var l2CurrentNode: ListNode? = l2
 
-    while (l1CurrentNode != null || l2CurrentNode != null || carry != 0) {
-        v = (l1CurrentNode?.value ?: 0) + (l2CurrentNode?.value ?: 0) + carry
+
+    do {
+        var v = (l1CurrentNode?.value ?: 0) + (l2CurrentNode?.value ?: 0) + carry
         carry = v / 10
         v %= 10
-
-        currentResultNode?.next = ListNode(v)
-        currentResultNode = currentResultNode?.next
+        currentResultNode?.value = v
 
         l1CurrentNode = l1CurrentNode?.next
         l2CurrentNode = l2CurrentNode?.next
-    }
+
+        if (l1CurrentNode != null || l2CurrentNode != null || carry != 0) {
+            currentResultNode?.next = ListNode(0)
+            currentResultNode = currentResultNode?.next
+        }
+    } while (l1CurrentNode != null || l2CurrentNode != null || carry != 0)
 
     return result
-}
-
-class ListNode(var value: Int) {
-    var next: ListNode? = null
-
-    override fun toString(): String {
-        if (next == null) {
-            return "$value"
-        }
-        return "$value -> $next"
-    }
-
-    fun getValue2() :Int {
-        return value
-    }
 }
 
 
@@ -78,5 +65,5 @@ fun main() {
 
     println(l2)
 
-    println(addTwoNumbers(l1, l2))
+    println(addTwoNumbers2(l1, l2))
 }
