@@ -36,34 +36,16 @@ fun findMedianSortedArrays(nums1: IntArray, nums2: IntArray): Double {
     var end2 = nums2.size - 1
 
     for (i in 0 until len) {
-        when {
-            start2 >= nums2.size -> {
-                start1++
-            }
-            start1  >= nums1.size -> {
-                start2++
-            }
-            nums1[start1] < nums2[start2] -> {
-                start1++
-            }
-            else -> {
-                start2++
-            }
+        if (start2 >= nums2.size || nums1[start1] < nums2[start2]) {
+            start1++
+        } else {
+            start2++
         }
 
-        when {
-            end2 < 0 -> {
-                end1--
-            }
-            end1 < 0 -> {
-                end2--
-            }
-            nums1[end1] > nums2[end2] -> {
-                end1--
-            }
-            else -> {
-                end2--
-            }
+        if (end2 < 0 || nums1[end1] > nums2[end2]) {
+            end1--
+        } else {
+            end2--
         }
     }
 
@@ -112,8 +94,8 @@ fun findMedianSortedArrays(nums: IntArray): Double {
 
 
 fun main() {
-    val nums1 = intArrayOf(1)
-    val nums2 = intArrayOf(2, 3, 4, 5)
+    val nums1 = intArrayOf(1, 5, 57)
+    val nums2 = intArrayOf(3, 4)
 
     println(findMedianSortedArrays(nums1, nums2))
 }

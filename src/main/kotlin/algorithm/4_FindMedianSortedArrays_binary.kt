@@ -44,18 +44,6 @@ fun findMedianSortedArrays(
     min: IntArray, minStart: Int, minEnd: Int,
     max: IntArray, maxStart: Int, maxEnd: Int
 ): Double {
-    // min被消解掉了
-    if (minStart > minEnd) {
-        val len = maxEnd - maxStart + 1
-        val half = maxStart + len / 2
-        return if (len % 2 == 1) {
-            // 奇数
-            max[half].toDouble()
-        } else {
-            (max[half] + max[half - 1]).toDouble() / 2
-        }
-    }
-
     // min只剩一个元素
     if (minStart == minEnd) {
         // max只有一个元素
@@ -93,6 +81,18 @@ fun findMedianSortedArrays(
         }
     }
 
+    // min被消解掉了
+    if (minStart > minEnd) {
+        val len = maxEnd - maxStart + 1
+        val half = maxStart + len / 2
+        return if (len % 2 == 1) {
+            // 奇数
+            max[half].toDouble()
+        } else {
+            (max[half] + max[half - 1]).toDouble() / 2
+        }
+    }
+
     val minHalf = (minStart + minEnd) / 2
     val maxHalf = (maxStart + maxEnd) / 2
     // 分治,递归
@@ -107,16 +107,24 @@ fun findMedianSortedArrays(
         }
         min[minHalf] > max[maxHalf] -> {
             val step = minEnd - minHalf
-            return if (step == 0 || step == 1) {
-                moveOneStep(minStart, minEnd, maxStart, maxEnd, min, max)
+            return if (step == 0) {
+                if (min[minStart] < max[maxStart]) {
+                    findMedianSortedArrays(min, minStart + 1, minEnd - 1, max, maxStart, maxEnd)
+                } else {
+                    findMedianSortedArrays(min, minStart, minEnd - 1, max, maxStart + 1, maxEnd)
+                }
             } else {
                 findMedianSortedArrays(min, minStart, minHalf, max, maxStart + step, maxEnd)
             }
         }
         else -> {
             val step = minHalf - minStart
-            return if (step == 0 || step == 1) {
-                moveOneStep(minStart, minEnd, maxStart, maxEnd, min, max)
+            return if (step == 0) {
+                if (min[minEnd] > max[maxEnd]) {
+                    findMedianSortedArrays(min, minStart + 1, minEnd - 1, max, maxStart, maxEnd)
+                } else {
+                    findMedianSortedArrays(min, minStart + 1, minEnd, max, maxStart, maxEnd - 1)
+                }
             } else {
                 findMedianSortedArrays(min, minHalf, minEnd, max, maxStart, maxEnd - step)
             }
@@ -124,42 +132,10 @@ fun findMedianSortedArrays(
     }
 }
 
-private fun moveOneStep(
-    minStart: Int,
-    minEnd: Int,
-    maxStart: Int,
-    maxEnd: Int,
-    min: IntArray,
-    max: IntArray
-): Double {
-    var minStart2 = minStart
-    var minEnd2 = minEnd
-    var maxStart2 = maxStart
-    var maxEnd2 = maxEnd
-
-    if (min[minStart] < max[maxStart]) {
-        minStart2++
-    } else {
-        maxStart2++
-    }
-
-    if (min[minEnd] < max[maxEnd]) {
-        maxEnd2--
-    } else {
-        minEnd2--
-    }
-
-    return if (minEnd2 - minStart2 < maxEnd2 - maxStart2) {
-        findMedianSortedArrays(min, minStart2, minEnd2, max, maxStart2, maxEnd2);
-    } else {
-        findMedianSortedArrays(max, maxStart2, maxEnd2, min, minStart2, minEnd2);
-    }
-}
-
 
 fun main() {
-    val nums1 = intArrayOf(1, 2, 6)
-    val nums2 = intArrayOf(3, 4, 5)
+    val nums1 = intArrayOf(1, 2)
+    val nums2 = intArrayOf(-1, 3)
 
     println(findMedianSortedArrays2(nums1, nums2))
 }
