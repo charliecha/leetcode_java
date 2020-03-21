@@ -18,14 +18,24 @@ package algorithm
 
 输入: x = 2, y = 6, z = 5
 输出: False
+
+ * 问题转换成树形搜索问题，从一个节点查找，没找到就查找它分裂的子节点。
+ * 此处使用广度查找算法
+ * 需要记录历史记录，避免陷入死循环
  */
 fun canMeasureWater(x: Int, y: Int, z: Int): Boolean {
     val list = mutableListOf<KettleNode>()
-    val history = mutableListOf<KettleNode>()
+    val history = mutableSetOf<KettleNode>()
     list.add(KettleNode(KettleState(Kettle(x), 0), KettleState(Kettle(y), 0)))
     while (list.isNotEmpty()) {
         val node = list.removeAt(0)
+
+        if (history.contains(node)) {
+            continue
+        }
+
         history.add(node)
+
         if (match(node, z)) {
             return true
         }
@@ -37,7 +47,7 @@ fun canMeasureWater(x: Int, y: Int, z: Int): Boolean {
 /**
  * 扩张node成为多个节点
  */
-fun expand(current: KettleNode, toSearch: MutableList<KettleNode>, history: MutableList<KettleNode>) {
+fun expand(current: KettleNode, toSearch: MutableList<KettleNode>, history: MutableSet<KettleNode>) {
     val state1 = current.state1
     val state2 = current.state2
 
@@ -54,7 +64,7 @@ fun expand(current: KettleNode, toSearch: MutableList<KettleNode>, history: Muta
         list2.add(KettleState(state2.kettle, state2.capacity))
     }
     if (!state2.isEmpty()) {
-        list1.add(KettleState(state2.kettle, 0))
+        list2.add(KettleState(state2.kettle, 0))
     }
 
     val nodes = mutableListOf<KettleNode>()
@@ -182,10 +192,15 @@ class KettleNode(val state1: KettleState, val state2: KettleState) {
         result = 31 * result + state2.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "${state1.fill}, ${state2.fill}"
+    }
 }
 
 fun main() {
 //    println(canMeasureWater(34, 5, 6))
-    println(canMeasureWater(3, 4, 5))
+    println(canMeasureWater(13, 11, 1))
+//    println(canMeasureWater(3, 4, 5))
 //    println(canMeasureWater(2, 6, 5))
 }
