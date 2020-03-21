@@ -33,7 +33,7 @@ T     S     G
  */
 fun convert(s: String, numRows: Int): String {
     // 转化本质上就是位置变化问题
-    if (s.isEmpty()) {
+    if (s.isEmpty() || numRows <= 1) {
         return s
     }
 
@@ -43,13 +43,14 @@ fun convert(s: String, numRows: Int): String {
     }
 
     // 元素被摆放的位置数组
-    val location = mutableListOf<Pair<Int, Int>>()
+    val rowLocation = mutableListOf<Int>()
+    val colLocation = mutableListOf<Int>()
 
     // 摆放元素的位置
-    arrange(indexArray.size, numRows, location)
+    arrange(indexArray.size, numRows, rowLocation, colLocation)
 
     // 按照新的规则排序，获取新的元素的索引位置
-    indexArray.sortWith(Comparator { o1, o2 -> compare(o1, o2, location) })
+    indexArray.sortWith(Comparator { o1, o2 -> compare(o1, o2, rowLocation, colLocation) })
 
     val stringBuilder = StringBuilder()
     for (i in 0 until indexArray.size) {
@@ -58,11 +59,12 @@ fun convert(s: String, numRows: Int): String {
     return stringBuilder.toString()
 }
 
-fun arrange(size: Int, numRows: Int, location: MutableList<Pair<Int, Int>>) {
+fun arrange(size: Int, numRows: Int, rowLocation: MutableList<Int>, colLocation: MutableList<Int>) {
     var row = 0
     var col = 0
     for (i in 0 until size) {
-        location.add(Pair(row, col))
+        rowLocation.add(row)
+        colLocation.add(col)
         if (col % (numRows - 1) == 0 && row != numRows - 1) {
             row++
         } else {
@@ -72,14 +74,12 @@ fun arrange(size: Int, numRows: Int, location: MutableList<Pair<Int, Int>>) {
     }
 }
 
-fun compare(o1: Int, o2: Int, location: List<Pair<Int, Int>>): Int {
-    val pair1 = location[o1]
-    val pair2 = location[o2]
+fun compare(o1: Int, o2: Int, rowLocation: List<Int>, colLocation: List<Int>): Int {
     return when {
-        pair1.first < pair2.first -> -1
-        pair1.first > pair2.first -> 1
-        pair1.second < pair2.second -> -1
-        pair1.second > pair2.second -> 1
+        rowLocation[o1] < rowLocation[o2] -> -1
+        rowLocation[o1] > rowLocation[o2] -> 1
+        colLocation[o1] < colLocation[o2] -> -1
+        colLocation[o1] > colLocation[o2] -> 1
         else -> 1
     }
 }
