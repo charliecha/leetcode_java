@@ -3,7 +3,7 @@ package algorithm
 import kotlin.math.abs
 
 /**
- 给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
 
 示例 1:
 
@@ -23,6 +23,12 @@ fun reverse(x: Int): Int {
         return 0
     }
 
+    val sign = if (x >= 0) {
+        1
+    } else {
+        -1
+    }
+
     var input = abs(x)
 
     val digits = mutableListOf<Int>()
@@ -31,7 +37,7 @@ fun reverse(x: Int): Int {
         input /= 10
     }
 
-    var result : Long = 0
+    var result: Long = 0
     for (digit in digits) {
         result = result * 10 + digit
     }
@@ -39,7 +45,7 @@ fun reverse(x: Int): Int {
     if (result > Int.MAX_VALUE) {
         return 0
     }
-    return result.toInt()
+    return result.toInt() * sign
 }
 
 
