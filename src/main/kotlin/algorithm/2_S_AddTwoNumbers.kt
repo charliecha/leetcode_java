@@ -15,6 +15,13 @@ package algorithm
 
  */
 fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
+    l1?.javaClass?.methods?.forEach {
+        println(it.name)
+    }
+
+    println(l1?.javaClass?.methods?.get(0)?.name)
+//    println(l1..fields[0].name)
+
     if (l1 == null) {
         return l2
     }
@@ -52,16 +59,12 @@ fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
 class ListNode(var value: Int) {
     var next: ListNode? = null
 
-    override fun toString(): String {
-        if (next == null) {
-            return "$value"
-        }
-        return "$value -> $next"
-    }
-
-    fun getValue2() :Int {
-        return value
-    }
+//    override fun toString(): String {
+//        if (next == null) {
+//            return "$value"
+//        }
+//        return "$value -> $next"
+//    }
 }
 
 
