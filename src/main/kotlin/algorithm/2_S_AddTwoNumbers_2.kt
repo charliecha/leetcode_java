@@ -34,10 +34,10 @@ fun addTwoNumbers2(l1: ListNode?, l2: ListNode?): ListNode? {
 
 
     do {
-        var v = (l1CurrentNode?.value ?: 0) + (l2CurrentNode?.value ?: 0) + carry
+        var v = (l1CurrentNode?.`val` ?: 0) + (l2CurrentNode?.`val` ?: 0) + carry
         carry = v / 10
         v %= 10
-        currentResultNode?.value = v
+        currentResultNode?.`val` = v
 
         l1CurrentNode = l1CurrentNode?.next
         l2CurrentNode = l2CurrentNode?.next

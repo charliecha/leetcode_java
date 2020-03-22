@@ -15,12 +15,6 @@ package algorithm
 
  */
 fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
-    l1?.javaClass?.methods?.forEach {
-        println(it.name)
-    }
-
-    println(l1?.javaClass?.methods?.get(0)?.name)
-//    println(l1..fields[0].name)
 
     if (l1 == null) {
         return l2
@@ -31,7 +25,7 @@ fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
     }
 
     var carry: Int
-    var v = l1.value + l2.value
+    var v = l1.`val` + l2.`val`
     carry = v / 10
     v %= 10
     val result = ListNode(v)
@@ -42,7 +36,7 @@ fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
 
 
     while (l1CurrentNode != null || l2CurrentNode != null || carry != 0) {
-        v = (l1CurrentNode?.value ?: 0) + (l2CurrentNode?.value ?: 0) + carry
+        v = (l1CurrentNode?.`val` ?: 0) + (l2CurrentNode?.`val` ?: 0) + carry
         carry = v / 10
         v %= 10
 
@@ -54,17 +48,6 @@ fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
     }
 
     return result
-}
-
-class ListNode(var value: Int) {
-    var next: ListNode? = null
-
-//    override fun toString(): String {
-//        if (next == null) {
-//            return "$value"
-//        }
-//        return "$value -> $next"
-//    }
 }
 
 
