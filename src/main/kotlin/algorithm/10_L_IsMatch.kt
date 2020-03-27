@@ -1,5 +1,7 @@
 package algorithm
 
+import java.util.*
+
 /**
 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
 
@@ -51,14 +53,52 @@ p = "mis*is*p*."
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 fun isMatch(s: String, p: String): Boolean {
-    return false
+    if (p.isEmpty()) {
+        return s.isEmpty()
+    }
+
+    if (p.length == 1) {
+        return s.length == 1 && (s[0] == p[0] || p[0] == '.')
+    }
+
+    val dp = Array(s.length + 1) {
+        Array(p.length + 1) {
+            false
+        }
+    }
+    dp[0][0] = true
+
+    for (j in 1 until p.length + 1) {
+        if (p[j - 1] == '*') {
+            dp[0][j] = dp[0][j - 2]
+        }
+    }
+
+    for (i in 1 until s.length + 1) {
+        for (j in 1 until p.length + 1) {
+            if (p[j - 1] == '*') {
+                dp[i][j] = (j > 1 && dp[i][j - 2]) || dp[i][j - 1]
+                if (p[j - 2] == '.' || s[i - 1] == p[j - 2]) {
+                    dp[i][j] = dp[i][j] || dp[i - 1][j - 1]
+                }
+            } else {
+                if (p[j - 1] == '.' || p[j - 1] == s[i - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1]
+                }
+            }
+        }
+    }
+
+    return dp[s.length][p.length]
 }
 
+
 fun main() {
-    println((isMatch("aa", "a")))
     println((isMatch("aa", "a*")))
+    println((!isMatch("aa", "a")))
+    println((isMatch("aa", "aa")))
     println((isMatch("ab", ".*")))
     println((isMatch("aab", "c*a*b")))
-    println((isMatch("mississippi", "mis*is*p*.")))
+    println((!isMatch("mississippi", "mis*is*p*.")))
 }
 
