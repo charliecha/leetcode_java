@@ -51,6 +51,8 @@ p = "mis*is*p*."
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/regular-expression-matching
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+ 动态规划实现，关键在于如何找到问题分解的路径
  */
 fun isMatch(s: String, p: String): Boolean {
     if (p.isEmpty()) {
@@ -79,7 +81,7 @@ fun isMatch(s: String, p: String): Boolean {
             if (p[j - 1] == '*') {
                 dp[i][j] = (j > 1 && dp[i][j - 2]) || dp[i][j - 1]
                 if (p[j - 2] == '.' || s[i - 1] == p[j - 2]) {
-                    dp[i][j] = dp[i][j] || dp[i - 1][j - 1]
+                    dp[i][j] = dp[i][j] || dp[i - 1][j]
                 }
             } else {
                 if (p[j - 1] == '.' || p[j - 1] == s[i - 1]) {
@@ -94,6 +96,7 @@ fun isMatch(s: String, p: String): Boolean {
 
 
 fun main() {
+    println((isMatch("aaa", ".*")))
     println((isMatch("aa", "a*")))
     println((!isMatch("aa", "a")))
     println((isMatch("aa", "aa")))
