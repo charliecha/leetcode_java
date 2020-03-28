@@ -53,6 +53,7 @@ p = "mis*is*p*."
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
  动态规划实现，关键在于如何找到问题分解的路径
+参考：https://www.bbsmax.com/A/rV57krbV5P/
  */
 fun isMatch(s: String, p: String): Boolean {
     if (p.isEmpty()) {
