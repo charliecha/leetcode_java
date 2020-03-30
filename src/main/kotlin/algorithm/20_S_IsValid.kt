@@ -44,6 +44,10 @@ private fun isValid(s: String): Boolean {
     val stack = Stack<Char>()
     for (c in s) {
         if (isClosedBrackets(c)) {
+            if (stack.isEmpty()) {
+                return false
+            }
+
             val char = stack.pop()
             if (isOpenBrackets(char) && !isMatchBrackets(c, char)) {
                 return false
@@ -52,7 +56,7 @@ private fun isValid(s: String): Boolean {
             stack.push(c)
         }
     }
-    return true
+    return stack.isEmpty()
 }
 
 fun isMatchBrackets(closeChar: Char, char: Char): Boolean {
