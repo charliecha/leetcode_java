@@ -41,14 +41,8 @@ class LFUCache(val capacity: Int) {
         if (list == null) {
             freqMap[freq] = mutableListOf(key)
         } else {
-//            if(list.contains(key)) {
-//                println("duplicate $freq:$key")
-//            }
             list.add(key)
         }
-
-
-//        println("addKey $freq:$key -> ${Arrays.toString(freqMap[freq]?.toIntArray())}")
     }
 
     private fun removeKey(freq: Int, key: Int) {
@@ -58,29 +52,19 @@ class LFUCache(val capacity: Int) {
         if (list.isEmpty()) {
             freqMap.remove(freq)
         }
-
-//        println("removeKey $freq:$key -> ${Arrays.toString(freqMap[freq]?.toIntArray())}")
     }
 
     fun get(key: Int): Int {
-//        println("cache.get($key)")
-//        if (valueMap[key] == null) {
-//            println(-1)
-//        }
-
         val node = valueMap[key] ?: return -1
 
         removeKey(node.freq, key)
         addKey(node.freq + 1, key)
         node.freq = node.freq + 1
 
-//        println(node.value)
         return node.value ?: -1
     }
 
     fun put(key: Int, value: Int) {
-//        println("cache.put($key, $value)")
-
         if (capacity == 0) {
             return
         }
@@ -89,7 +73,6 @@ class LFUCache(val capacity: Int) {
             val minFreq = freqMap.keys.min() ?: return
 
             val oldestKey = freqMap[minFreq]!![0]
-//            println("delete $minFreq $oldestKey")
             removeKey(minFreq, oldestKey)
             valueMap.remove(oldestKey)
         }
