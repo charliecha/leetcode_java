@@ -1,9 +1,5 @@
 package algorithm
 
-import java.util.*
-import kotlin.collections.HashMap
-import kotlin.collections.LinkedHashMap
-
 /**
  * 设计并实现最不经常使用（LFU）缓存的数据结构。它应该支持以下操作：get 和 put。
 
@@ -31,6 +27,10 @@ cache.get(4);       // 返回 4
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/lfu-cache
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+ 运用双层链表的思想，内层为同一频率key的集合，外层为内层的map。
+
+ 此实现还可以优化，外层可以改造为双向有序链表，主要是优化空间满了删除的操作时间。
  */
 class LFUCache(val capacity: Int) {
     private val valueMap = HashMap<Int, Node>()
@@ -61,7 +61,7 @@ class LFUCache(val capacity: Int) {
         addKey(node.freq + 1, key)
         node.freq = node.freq + 1
 
-        return node.value ?: -1
+        return node.value
     }
 
     fun put(key: Int, value: Int) {
@@ -94,7 +94,8 @@ class LFUCache(val capacity: Int) {
 }
 
 fun main() {
-    val cache = LFUCache(10 /* capacity (缓存容量) */);
+    /* capacity (缓存容量) */
+    val cache = LFUCache(10)
 
 //    cache.put(1, 1);
 //    cache.put(2, 2);
