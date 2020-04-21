@@ -24,6 +24,8 @@ package algorithm
 输入：nums = [2,2,2,1,2,2,1,2,2,2], k = 2
 输出：16
 
+动态规划，并没有降低时间复杂度
+
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/count-number-of-nice-subarrays
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
