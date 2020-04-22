@@ -16,6 +16,8 @@ package algorithm
 
 你能尝试使用一趟扫描实现吗？
 
+双链表问题
+
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -32,10 +34,10 @@ fun removeNthFromEnd(head: ListNode?, n: Int): ListNode? {
     while (c > 0) {
         if (nNode.next == null) {
             break
-        } else {
-            nNode = nNode.next
-            c--
         }
+
+        nNode = nNode.next
+        c--
     }
 
     if (c == 1) {
