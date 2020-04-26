@@ -21,14 +21,18 @@ import java.util.*
 链接：https://leetcode-cn.com/problems/merge-k-sorted-lists
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+fun mergeKLists(arrays: Array<ListNode?>): ListNode? {
     // 反序的头
     var reversedHead: ListNode? = null
+
+    val lists = mutableListOf<ListNode?>().apply {
+        addAll(arrays)
+    }
 
     var hasNode: Boolean
     do {
         hasNode = false
-        for (i in 0 until lists.size) {
+        for (i in lists.size - 1 downTo 0) {
             val listNode = lists[i]
             if (listNode != null) {
                 hasNode = true
@@ -52,6 +56,8 @@ fun mergeKLists(lists: Array<ListNode?>): ListNode? {
                         prev.next = listNode
                     }
                 }
+            } else {
+                lists.removeAt(i)
             }
         }
 
