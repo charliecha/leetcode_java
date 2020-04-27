@@ -42,27 +42,24 @@ fun search(nums: IntArray, target: Int, start: Int, end: Int): Int {
     }
 
     val half = (start + end) / 2
-    if (nums[half] == target) {
-        return half
-    } else if (nums[half] > nums[start]) {
-        // 有序
-        if (nums[start] < target && nums[half] > target) {
-            val result = nums.binarySearch(target, start, half)
-            return if (result >= 0) result else -1
-        } else {
-            return search(nums, target, half + 1, end)
-        }
-    } else if (nums[half] < nums[end]) {
-        // 有序
-        if (nums[half] < target && nums[end] > target) {
-            val result = nums.binarySearch(target, half, end)
-            return if (result >= 0) result else -1
-        } else {
-            return search(nums, target, start, half - 1)
-        }
-    } else {
-        // 主要是一些half和start,end相等的情况
-        return -1
+    when {
+        nums[half] == target -> return half
+        nums[half] > nums[start] -> // 有序
+            return if (nums[start] < target && nums[half] > target) {
+                val result = nums.binarySearch(target, start, half)
+                if (result >= 0) result else -1
+            } else {
+                search(nums, target, half + 1, end)
+            }
+        nums[half] < nums[end] -> // 有序
+            return if (nums[half] < target && nums[end] > target) {
+                val result = nums.binarySearch(target, half, end)
+                if (result >= 0) result else -1
+            } else {
+                search(nums, target, start, half - 1)
+            }
+        else -> // 主要是一些half和start,end相等的情况
+            return -1
     }
 }
 
